@@ -56,7 +56,7 @@ const EventPage = () => {
                     await Promise.all(sendTransactions);
                     setWalletTransactions(transactions);
                 } catch (error) {
-                    console.error("Error processing incoming data:", error.message);
+                    console.log(error);
                 }
             });
         });
