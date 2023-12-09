@@ -1,4 +1,3 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { QuizDataProvider } from "../../context/quizDataContext";
 export const metadata: Metadata = {
