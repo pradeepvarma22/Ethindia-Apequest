@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import SockJS from "sockjs-client";
 import * as stomp from "webstomp-client";
 import { useQuizData } from "../../../context/quizDataContext";
+import "../globals.css";
 
 interface UserData {
     userName: string;
@@ -164,18 +165,18 @@ const WaitingPage = () => {
     }, [userData?.userName, gamePin]);
 
     return (
-        <div>
-            <div>Please wait host will start the quizz</div>
-            <div>
+        <div className="page-wrapper waiting-page">
+            <div className="host">Please wait host will start the quizz</div>
+            <div className="quiz-data">
                 Quizz details
                 <div>
                     {quizData ? (
-                        <div>
+                        <div >
                             <b>Quiz Title: {quizData.quizzTitle}</b>
                             <p>Created At: {quizData.createdAt ? quizData.createdAt.toISOString() : "N/A"}</p>
                             <p>Created By: {quizData.createdBy}</p>
                             <p>Game Pin: {quizData.gamePin}</p>
-                            <p>Status: {quizData.status}</p>
+                            <p className="status">Status: {quizData.status}</p>
                         </div>
                     ) : (
                         <p>Loading quiz data...</p>
@@ -183,8 +184,8 @@ const WaitingPage = () => {
                 </div>
             </div>
 
-            <h2>Connected Users</h2>
-            <ul>
+            <h2 className="connected-heading">Connected Users</h2>
+            <ul className="quiz-data">
                 {connectedUsers.map((user: UserData, index: number) => (
                     <div key={index}>
                         <ul>

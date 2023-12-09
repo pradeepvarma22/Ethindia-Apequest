@@ -1,0 +1,221 @@
+p {
+    margin-block: 0px;
+}
+.page-wrapper {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(90deg, #2f0917 0%, #1f092a 100%);
+    max-width: 100%;
+    overflow: hidden;
+}
+.btn-wrapper {
+    display: flex;
+    height: 100vh;
+}
+body {
+    margin: 0px !important;
+    color: white;
+}
+.filecoin-cta {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 2.25rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 1.375rem 3.0625rem;
+    border-radius: 2.75rem;
+    border: 4px solid #f4511f;
+    background-color: transparent;
+    margin: auto;
+}
+.filecoin-cta:hover {
+    background: #f4511f;
+    box-shadow: 0px 0px 12px 0px #ff5b79;
+}
+.input-text {
+    color: rgba(255, 255, 255);
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.04625rem; /* 136.417% */
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ff5b79;
+}
+.input-text:focus-visible {
+    border: transparent;
+}
+.submit-button {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0.1875rem 1.5rem;
+    border-radius: 0.625rem;
+    border: 1px solid #ff5b79;
+    background-color: transparent;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+.address {
+    position: absolute;
+    top: 6rem;
+    right: 6rem;
+    color: #fff;
+    font-family: Poppins;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.4525rem; /* 196.2% */
+}
+.d-flex-h-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.m-auto {
+    margin: auto;
+}
+.game-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.user-details-wrapper {
+    margin-left: 5rem;
+    margin-top: 10rem;
+}
+.waiting-page {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.04625rem; /* 136.417% */
+}
+.host {
+    width: 100%;
+    text-align: center;
+    margin-top: 8rem;
+}
+.status {
+    position: absolute;
+    top: 10rem;
+    right: 5rem;
+}
+.quiz-data {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin-block: 0px;
+    margin-left: 3rem;
+    font-weight: 400;
+}
+.connected-heading {
+    color: #f4511f;
+    font-family: Poppins;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 2.4rem */
+    margin-left: 3rem;
+}
+.timer-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+}
+.question-grid {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+.timer-heading {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.04625rem; /* 68.208% */
+    margin-bottom: 3rem;
+    text-align: center;
+}
+.timer {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.04625rem; /* 136.417% */
+}
+.time {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.04625rem; /* 68.208% */
+    padding: 1.5rem;
+    border-radius: 50%;
+    border: 3px solid var(--apequest-club-orient, #ff5b79);
+    width: min-content;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+}
+.seconds {
+    color: #fff;
+    font-family: Poppins;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 1.2rem */
+}
+.answers-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3rem;
+}
+.score-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    font-size: 1.5rem;
+    max-width: 500px;
+    margin: auto;
+}
+.answer{
+    color: #FFF;
+font-family: Poppins;
+font-size: 1.89344rem;
+font-style: normal;
+font-weight: 400;
+line-height: 120%; /* 2.27213rem */
+border: 1.262px solid var(--apequest-club-orient, #FF5B79);
+padding: 1.25rem;
+}
+.user-wrapper{
+ display: flex;
+ justify-content: space-between;
+}
+.left{
+    text-align: left;
+}
+.right{
+    text-align: right;
+}
+.scores{
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}

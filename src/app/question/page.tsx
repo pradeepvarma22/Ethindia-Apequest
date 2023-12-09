@@ -4,6 +4,7 @@ import { useQuizData } from "../../../context/quizDataContext";
 import SockJS from "sockjs-client";
 import * as Stomp from "webstomp-client";
 import { useRouter } from "next/navigation";
+import "../globals.css";
 
 interface IClientQuestion {
     questionNumber: number;
@@ -25,6 +26,10 @@ export default function Question() {
     const { quizGlobalData } = useQuizData();
 
     useEffect(() => {
+
+        // setCurrentQuestion({text:"who is your x ?", options:["A for apple","B for ball", "C for cat", "D for dog"], category: "",imageUrl:"",lastQuestion:false, questionNumber:1, tags:[
+        //     ""], timeLimitInSeconds:10});
+
         const fetchQuestion = () => {
             const URI = process.env.NEXT_PUBLIC_URI + "/apequest-ws-endpoint/";
             const ws = new SockJS(URI);
@@ -115,31 +120,33 @@ export default function Question() {
     }
 
     return (
-        <div>
+        <div className="page-wrapper question-grid">
             <div>
-                <div>Timer: {timer} seconds</div>
-            </div>
-            {currentQuestion && (
                 <div>
-                    <div>{currentQuestion.questionNumber + ""}</div>
-                    <div>{currentQuestion.text}</div>
-                    <div>
-                        {currentQuestion.options.map((option: string, index: number) => (
-                            <div key={index}>
-                                <div
-                                    onClick={() => handleUserSelectedOption(option)}
-                                    style={{
-                                        cursor: disableOptionSelect ? "not-allowed" : "pointer",
-                                        opacity: disableOptionSelect ? 0.5 : 1,
-                                    }}
-                                >
-                                    {option}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <div className="timer-wrapper"><span className="timer">Timer</span> <span className="time">{timer}</span> <span className="seconds">seconds</span></div>
                 </div>
-            )}
+                {currentQuestion && (
+                    <div>
+                        {/* <div>{currentQuestion.questionNumber + ""}</div> */}
+                        <div className="timer-heading">{currentQuestion.text}</div>
+                        <div className="answers-wrapper">
+                            {currentQuestion.options.map((option: string, index: number) => (
+                                <div key={index}>
+                                    <div className="answer"
+                                        onClick={() => handleUserSelectedOption(option)}
+                                        style={{
+                                            cursor: disableOptionSelect ? "not-allowed" : "pointer",
+                                            // opacity: disableOptionSelect ? 0.5 : 1,
+                                        }}
+                                    >
+                                        {option}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

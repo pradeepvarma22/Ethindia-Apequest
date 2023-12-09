@@ -1,4 +1,5 @@
 "use client";
+import "./globals.css";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Web3Button from "../../components/Web3Button";
@@ -61,7 +62,7 @@ export default function Apequest() {
     
 
     return (
-        <div>
+        <div className="page-wrapper">
             <div>
                 {!isConnected && (
                     <Web3Button
@@ -73,16 +74,16 @@ export default function Apequest() {
                 )}
             </div>
 
-            <div>
+            <div className="d-flex-h-full">
                 {isConnected && !isSaved && (
-                    <div>
-                        <input type="text" placeholder="Enter Username" onChange={(e) => setUsername(e.target.value)} />
-                        <button onClick={(e) => setIsSaved(true)}>save</button>
+                    <div className="m-auto">
+                        <input className="input-text" type="text" placeholder="Enter Username" onChange={(e) => setUsername(e.target.value)} />
+                        <button className="submit-button" onClick={(e) => setIsSaved(true)}>save</button>
                     </div>
                 )}
             </div>
 
-            {isConnected && <div>Your address: {address}</div>}
+            {isConnected && <div className="address">Your address: {address}</div>}
             {error && <div>Error: {error}</div>}
         </div>
     );

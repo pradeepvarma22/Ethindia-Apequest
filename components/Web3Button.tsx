@@ -32,8 +32,8 @@ const Web3Button: React.FC<Web3ButtonProps> = ({ address, setAddress, isConnecte
     };
 
     return (
-        <div>
-            <button onClick={handleClick} disabled={buttonClicked || isConnected}>
+        <div className="btn-wrapper">
+            <button className="filecoin-cta" onClick={handleClick} disabled={buttonClicked || isConnected}>
                 Connect To FileCoin
             </button>
         </div>

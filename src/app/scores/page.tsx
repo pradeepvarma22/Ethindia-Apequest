@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import "../globals.css";
 
 interface IScores {
     userName: string;
@@ -34,14 +35,14 @@ export default function Scores() {
     };
 
     return (
-        <div>
-            <div>Scores List</div>
-            <div>
+        <div className="page-wrapper">
+            <div className="scores">Scores List</div>
+            <div className="score-grid">
                 {scoresList.map((score, index) => (
-                    <div key={index}>
-                        <span>User: {score.userName}</span>
-                        <span>Score: {score.score}</span>
-                        <span>Amount: {score.amount}</span>
+                    <div  key={index}>
+                        <div className="user-wrapper"><span className="left">User:</span> <span className="right">{score.userName}</span></div>
+                        <div className="user-wrapper"><span className="left">Score:</span> <span className="right">{score.score}</span></div>
+                        <div className="user-wrapper"><span className="left">Amount:</span> <span className="right">{score.amount}</span></div>
                     </div>
                 ))}
             </div>

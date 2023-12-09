@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import "../globals.css";
 
 interface IUserData {
     userName: string;
@@ -85,6 +86,7 @@ const Pin = () => {
         removeLocalStorageItem(GAME_PIN);
         const t_walletAddress = localStorage.getItem("walletAddress");
         if (t_walletAddress) {
+            setAddress(t_walletAddress);
             setIsConnected(true);
         }
 
@@ -98,8 +100,9 @@ const Pin = () => {
     }, [isConnected, address]);
 
     return (
-        <div>
-            <div>
+        <div className="page-wrapper input-wrapper">
+            <div className="address">{address}</div>
+            <div className="user-details-wrapper">
                 {userData ? (
                     <div>
                         <h2>User Details:</h2>
@@ -109,10 +112,10 @@ const Pin = () => {
                     <div>Loading...</div>
                 )}
             </div>
-            <div>
-                <div>Game PIN</div>
-                <input type="text" value={gamePin} onChange={(e) => setGamePin(e.target.value)} />
-                <button onClick={validateQuizzPin}>Start Quiz</button>
+            <div className="game-pin">
+                {/* <div>Game PIN</div> */}
+                <input className="input-text" placeholder="Game PIN" type="text" value={gamePin} onChange={(e) => setGamePin(e.target.value)} />
+                <button className="submit-button" onClick={validateQuizzPin}>Start Quiz</button>
             </div>
             <div> {error && <div>{error}</div>}</div>
         </div>
