@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 import SockJS from "sockjs-client";
 import * as stomp from "webstomp-client";
@@ -25,18 +24,23 @@ const WaitingPage = () => {
     const { setGlobalQuizData } = useQuizData();
 
     const [connectedUsers, setConnectedUsers] = useState<UserData[]>([]);
-    const { address, isConnected } = useAccount();
+
+    const [address, setAddress] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
+
     const [userData, setUserData] = useState<UserData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [gamePin, setGamePin] = useState<string>("");
     const router = useRouter();
     const [quizData, setQuizData] = useState<QuizDetails | null>(null);
 
-    const fetchUserData = async () => {
+    const fetchUserData = async (t_walletAddress: string) => {
         try {
-            const URI = process.env.NEXT_PUBLIC_URI! + `/users/get-user-data?walletAddress=${address}`;
+            const URI = process.env.NEXT_PUBLIC_URI! + `/users/get-user-data?walletAddress=${t_walletAddress}`;
+            console.log(URI);
+            console.log("fetchUserData__2");
             const response = await fetch(URI);
-
+            console.log(response);
             if (response.ok) {
                 const t_userData = await response.json();
                 setUserData(t_userData);
@@ -54,19 +58,19 @@ const WaitingPage = () => {
             if (!gamePinLocalStorage) {
                 throw new Error("Game pin not found");
             }
-            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-            console.log(gamePinLocalStorage)
+            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            console.log(gamePinLocalStorage);
 
             const URI = `${process.env.NEXT_PUBLIC_URI}/quiz/quiz-details/${Number(gamePinLocalStorage)}`;
 
-            console.log(URI)
+            console.log(URI);
             const response = await fetch(URI, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            console.log(response)
+            console.log(response);
 
             if (response.ok) {
                 const quizzBasicData = await response.json();
@@ -76,18 +80,23 @@ const WaitingPage = () => {
                 throw new Error("Failed to fetch quiz data");
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
             setError("Error at getQuizDetails");
         }
     }
 
-    async function waitFunction() {
-        await fetchUserData();
+    async function waitFunction(t_walletAddress: string) {
+        await fetchUserData(t_walletAddress);
         await getQuizDetails();
     }
 
     useEffect(() => {
-        if (isConnected) {
+        const t_walletAddress = localStorage.getItem("walletAddress");
+
+        if (t_walletAddress) {
+            // is connected
+            setAddress(t_walletAddress);
+            setIsConnected(true);
             const gamePinLocalStorage: string | null = localStorage.getItem(GAME_PIN);
             if (gamePinLocalStorage == null) {
                 router.push("/input-page");
@@ -97,7 +106,7 @@ const WaitingPage = () => {
                 setGamePin(gamePinLocalStorage);
             }
 
-            waitFunction();
+            waitFunction(t_walletAddress);
         } else {
             router.push("/");
         }

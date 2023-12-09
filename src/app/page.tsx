@@ -1,13 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Web3Button } from "@web3modal/react";
-import { useAccount, useNetwork } from "wagmi";
 import { useRouter } from "next/navigation";
+import Web3Button from "../../components/Web3Button";
 
-interface User {
-    walletAddress: string;
-    userName: string;
-}
 
 const setLocalStorage = (key: string, value: string) => {
     if (typeof window !== "undefined") {
@@ -16,8 +11,8 @@ const setLocalStorage = (key: string, value: string) => {
 };
 
 export default function Apequest() {
-    const { chain } = useNetwork();
-    const { address, isConnected } = useAccount();
+    const [address, setAddress] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
     const [username, setUsername] = useState("");
     const [isSaved, setIsSaved] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,7 +41,6 @@ export default function Apequest() {
 
             if (response.ok) {
                 console.log("User created successfully");
-                setLocalStorage("walletAddress", address!);
                 setLocalStorage("username", username!);
                 router.push("/input-pin");
             } else {
@@ -63,9 +57,21 @@ export default function Apequest() {
         }
     }, [isSaved]);
 
+
+    
+
     return (
         <div>
-            <div>{!isConnected && <Web3Button />}</div>
+            <div>
+                {!isConnected && (
+                    <Web3Button
+                        address={address}
+                        setAddress={setAddress}
+                        isConnected={isConnected}
+                        setIsConnected={setIsConnected}
+                    />
+                )}
+            </div>
 
             <div>
                 {isConnected && !isSaved && (

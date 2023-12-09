@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 
 interface IUserData {
@@ -23,20 +22,23 @@ const removeLocalStorageItem = (key: string) => {
 const GAME_PIN: string = "game_pin";
 
 const Pin = () => {
-    const { address, isConnected } = useAccount();
+    const [address, setAddress] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
     const [userData, setUserData] = useState<IUserData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [gamePin, setGamePin] = useState<string>("");
     const router = useRouter();
 
-    const fetchUserData = async () => {
+    const fetchUserData = async (t_walletAddress: string) => {
         try {
-            const URI = process.env.NEXT_PUBLIC_URI! + `/users/get-user-data?walletAddress=${address}`;
+            const URI = process.env.NEXT_PUBLIC_URI! + `/users/get-user-data?walletAddress=${t_walletAddress}`;
+            console.log("fetchUserData");
+            console.log(URI);
             const response = await fetch(URI);
             console.log(response);
             if (response.ok) {
                 const t_userData = await response.json();
-                console.log(t_userData)
+                console.log(t_userData);
                 setUserData(t_userData);
             } else {
                 setError("Failed to fetch user data");
@@ -48,7 +50,6 @@ const Pin = () => {
 
     const validateQuizzPin = async () => {
         try {
-            
             const URI = `${process.env.NEXT_PUBLIC_URI}/quiz/validate-id/${gamePin}`;
 
             const response = await fetch(URI, {
@@ -57,16 +58,14 @@ const Pin = () => {
                     "Content-Type": "application/json",
                 },
             });
-            console.log(URI)
+            console.log(URI);
             const data = await response.json(); // true or false
             console.log("Validated Data");
-            console.log(response)
+            console.log(response);
             console.log(data);
 
             if (response.ok) {
                 setLocalStorage(GAME_PIN, gamePin);
-                setLocalStorage("userName", userData!?.userName);
-                setLocalStorage("walletAddress", userData!?.walletAddress);
 
                 router.push("/waiting-page");
             } else {
@@ -77,17 +76,22 @@ const Pin = () => {
         }
     };
 
-
-    async function waitFunction() {
-        console.log('Fetching User data')
-        await fetchUserData();
+    async function waitFunction(t_walletAddress: string) {
+        console.log("Fetching User data");
+        await fetchUserData(t_walletAddress);
     }
 
     useEffect(() => {
         removeLocalStorageItem(GAME_PIN);
+        const t_walletAddress = localStorage.getItem("walletAddress");
+        if (t_walletAddress) {
+            setIsConnected(true);
+        }
 
-        if (isConnected) {
-            waitFunction();
+        if (t_walletAddress) {
+            // connected to wallet
+
+            waitFunction(t_walletAddress);
         } else {
             router.push("/");
         }
