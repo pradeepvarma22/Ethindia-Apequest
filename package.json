@@ -1,0 +1,41 @@
+{
+  "name": "apequest-static",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "20.6.0",
+    "@types/react": "18.2.21",
+    "@types/react-dom": "18.2.7",
+    "@web3modal/ethereum": "^2.7.1",
+    "@web3modal/react": "^2.7.1",
+    "encoding": "^0.1.13",
+    "eslint": "8.49.0",
+    "eslint-config-next": "13.4.19",
+    "lokijs": "1.x",
+    "net": "^1.0.2",
+    "next": "13.4.19",
+    "pino-pretty": "^10.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sockjs-client": "^1.6.1",
+    "stomp-websocket": "^2.3.4-next",
+    "stompjs": "^2.3.3",
+    "tls": "^0.0.1",
+    "typescript": "5.2.2",
+    "viem": "^1.10.9",
+    "wagmi": "^1.4.1",
+    "web3": "^4.1.1",
+    "webstomp-client": "^1.2.6"
+  },
+  "devDependencies": {
+    "@types/sockjs-client": "^1.5.4",
+    "@types/stompjs": "^2.3.9",
+    "eslint-config-prettier": "^9.0.0"
+  }
+}
