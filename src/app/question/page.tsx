@@ -1,8 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuizData } from "../../../context/quizDataContext";
 import SockJS from "sockjs-client";
-import * as stomp from "webstomp-client";
+import * as Stomp from "webstomp-client";
 import { useRouter } from "next/navigation";
 
 interface IClientQuestion {
@@ -13,65 +13,88 @@ interface IClientQuestion {
     imageUrl: string;
     tags: string[];
     timeLimitInSeconds: number;
-    isLastQuestion: boolean;
+    lastQuestion: boolean;
 }
 
 export default function Question() {
     const [currentQuestion, setCurrentQuestion] = useState<IClientQuestion | null>(null);
     const [disableOptionSelect, setDisableOptionSelect] = useState(true);
+    const [lastQuestion, setLastQuestion] = useState(false);
     const [timer, setTimer] = useState(13);
-    const [redirectToBounty, setRedirectToBounty] = useState(false);
     const router = useRouter();
-
-    const { quizGlobalData, setGlobalQuizData } = useQuizData();
+    const { quizGlobalData } = useQuizData();
 
     useEffect(() => {
-        const URI = process.env.NEXT_PUBLIC_URI + "/apequest-ws-endpoint/";
-        const ws = new SockJS(URI);
-        const stompClient = stomp.over(ws);
+        const fetchQuestion = () => {
+            const URI = process.env.NEXT_PUBLIC_URI + "/apequest-ws-endpoint/";
+            const ws = new SockJS(URI);
+            const stompClient = Stomp.over(ws);
 
-        stompClient.connect({}, () => {
-            console.log("Connected to WebSocket");
+            stompClient.connect({}, () => {
+                console.log("Connected to WebSocket");
 
-            stompClient.subscribe("/topic/question/" + quizGlobalData?.f_quizzId, (response) => {
-                const f_question: IClientQuestion = JSON.parse(response.body);
-
-                if (f_question.isLastQuestion && timer === 0) {
-                    setRedirectToBounty(true); // Set state to redirect to bounty page
-                } else {
+                stompClient.subscribe("/topic/question/" + quizGlobalData?.f_quizzId, (response) => {
+                    const f_question: IClientQuestion = JSON.parse(response.body);
                     setCurrentQuestion(f_question);
                     setTimer(f_question.timeLimitInSeconds);
                     setDisableOptionSelect(false);
-                }
+                });
             });
-        });
 
-        return () => {
-            stompClient.disconnect();
+            return () => {
+                stompClient.disconnect(() => {
+                    console.log("Disconnected from WebSocket");
+                });
+            };
         };
-    }, [quizGlobalData?.f_quizzId, timer]);
+
+        if (quizGlobalData?.f_quizzId) {
+            fetchQuestion();
+        }
+    }, [quizGlobalData?.f_quizzId]);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (timer > 0) {
-                setTimer((prevTimer) => prevTimer - 1);
-            }
+            setTimer((prevTimer) => {
+                console.log("TIME" + prevTimer);
+
+                if (prevTimer > 0) {
+                    return prevTimer - 1;
+                } else {
+                    console.log("currentQuestion?.isLastQuestion" + currentQuestion?.lastQuestion);
+                    if (currentQuestion?.lastQuestion) {
+                        console.log("INSIDE");
+                        setLastQuestion(true);
+                    }
+                    return prevTimer;
+                }
+            });
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer]);
+    }, [currentQuestion]);
+
+    useEffect(() => {
+        console.log(lastQuestion)
+        if(lastQuestion){
+            console.log("Redirecting to bounty page...");
+            router.push("/scores");    
+        }
+    }, [lastQuestion]);
 
     function handleUserSelectedOption(option: string): void {
         if (currentQuestion && !disableOptionSelect) {
             setDisableOptionSelect(true);
 
             const t_walletAddress = localStorage.getItem("address");
+            const t_userName = localStorage.getItem("userName");
 
             const requestData = {
                 walletAddress: t_walletAddress,
                 answer: option,
                 quizzId: quizGlobalData?.f_quizzId,
                 questionId: currentQuestion.questionNumber,
+                userName: t_userName
             };
             const URI = process.env.NEXT_PUBLIC_URI! + "/attempts/submit";
 
@@ -90,13 +113,6 @@ export default function Question() {
                 });
         }
     }
-
-    useEffect(() => {
-        if (redirectToBounty) {
-            console.log("Redirecting to bounty page...");
-            router.push("/scores");
-        }
-    }, [redirectToBounty]);
 
     return (
         <div>
